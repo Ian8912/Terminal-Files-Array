@@ -1,11 +1,7 @@
-// File Name: assign1.cpp
-//
 // Author:              Ian Lingo
 // Collaborators:       Cade Wilson
 // Date:                9/8/2023
-// Assignment Number:   1
-// CS 2308 Fall 2023
-//
+
 // Description:
 // The following program simulates the file system (folders) on the operating computer.
 // The filing system is assigned pre-determined values, and then the user may add files
