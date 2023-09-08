@@ -1,0 +1,139 @@
+// File Name: assign1.cpp
+//
+// Author:              Ian Lingo
+// Collaborators:       Cade Wilson
+// Date:                9/8/2023
+// Assignment Number:   1
+// CS 2308 Fall 2023
+//
+// Description:
+// The following program simulates the file system (folders) on the operating computer.
+// The filing system is assigned pre-determined values, and then the user may add files
+// to the existing system until they choose to exit the program.
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+//  [Folder Structure]
+struct folder
+{
+    string name;
+    int numFiles;
+    double size;
+};
+
+//  [Prints current fileSystem data to console]
+void printFolders(folder fileSystem[], const int SIZE)
+{
+    cout << left
+         << setw(3) << "N"
+         << setw(15) << "Name"
+         << setw(10) << "Num files"
+         << setw(10) << "Size(Mb)"
+         << "\n";
+    for (int i = 0; i < SIZE; i += 1)
+    {
+        cout << left
+             << setw(3) << (i + 1)
+             << setw(15) << fileSystem[i].name
+             << setw(10) << fileSystem[i].numFiles
+             << fixed << setprecision(2) << setw(10) << fileSystem[i].size
+             << "\n";
+    }
+}
+
+//  [Updates fileSystem for user's specifications]
+void updateFolder(folder fileSystem[], int addNumFiles, double addFolderSize)
+{
+    fileSystem[addNumFiles].size += addFolderSize;
+    fileSystem[addNumFiles].numFiles += 1;
+}
+
+//  [Returns the average file size of the passed folder]
+double getAvg(folder folder)
+{
+    double avg = (folder.size / folder.numFiles);
+    return avg;
+}
+
+//  [Prints fileSystem stats to console]
+void printSystemData(folder fileSystem[], const int SIZE)
+{
+    //  [System data Initialization]
+    double totalSize = 0;
+    folder largest = fileSystem[0];
+
+    //  [Assigning system data]
+    for (int i = 0; i < SIZE; i++)
+    {
+        totalSize += fileSystem[i].size;
+
+        if (getAvg(fileSystem[i]) > getAvg(largest))
+        {
+            largest = fileSystem[i];
+        }
+    }
+
+    //  [Prints system data to console]
+    cout << "Total size of all folders: " << totalSize << "\n";
+    cout << "Folder with the largest average file size: " << largest.name << "\n";
+}
+
+int main()
+{
+    //  [Variables]
+    const int SIZE = 10;
+    bool running = true;
+    int addNumFiles;
+    double addFolderSize;
+    bool flag;
+
+    //  [FileSystem Initialization]
+    folder fileSystem[SIZE] = {{"Documents", 5, 12.38}, {"Downloads", 11, 17.22}, {"Pictures", 27, 30.26}, {"Videos", 6, 22.75}, {"Projects", 3, 7.94}, {"Labs", 6, 1.44}, {"Music", 45, 102.73}, {"Favorites", 4, 2.10}, {"Contacts", 35, 3.51}, {"Miscellaneous", 1, 2.23}};
+
+    while (running)
+    {
+        flag = false;
+        //  [Prints file system to console]
+        printFolders(fileSystem, SIZE);
+
+        //  [Assigns file ID from user]
+        cout << "Enter the folder number (0 to quit):"
+             << "\n";
+        cin >> addNumFiles;
+
+        //  [Quitting the Program]
+        if (addNumFiles == 0)
+        {
+            running = false;
+            flag = true;
+        }
+
+        //  [Changing file data]
+        else if (addNumFiles > 0 && addNumFiles <= SIZE)
+        {
+
+            //  [Assigns new files size from the user]
+            cout << "Enter the file size:"
+                 << "\n";
+            cin >> addFolderSize;
+            if (addFolderSize >= 0)
+            {
+                updateFolder(fileSystem, (addNumFiles - 1), addFolderSize);
+                flag = true;
+            }
+        }
+
+        //  [Invalid user input response]
+        if (flag == false)
+        {
+            cout << "Invalid folder number\n";
+        }
+    }
+
+    //  [Prints fileSystem statistics to console]
+    printSystemData(fileSystem, SIZE);
+
+    return 0;
+};
